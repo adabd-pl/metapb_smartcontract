@@ -1,0 +1,35 @@
+[      
+    {
+         "invoke": "deleteAllFromState"
+    },
+    { 
+        "invoke": "initLedger"
+    },
+    {
+        "query": "getEffectivePermission",
+        "args": ["U1" , "G1"]
+    },
+    {
+        "query": "getEffectivePermission",
+        "args": ["U1" , "A1"]
+    },
+    {
+       "invoke": "updatePermissions",
+       "args": [ "U1" ,  "G1" , "001" ,"UPDATE"]
+    },
+    {
+        "invoke": "deletePermissions",
+        "args": [ "U1" ,  "G1" ]
+     },
+    {
+        "invoke": "addVertex",
+        "args": [ "U6"  ]
+     },
+     {
+        "invoke": "updatePermissions",
+        "args": [ "G1" ,  "A1" , "111" ,"UPDATE"]
+     },
+    {
+        "query": "queryGraph"
+    }
+]

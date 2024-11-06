@@ -1,0 +1,11 @@
+{
+    "configurations": [  
+        
+        {
+            "name": "Debug Chaincode",
+            "type": "hlf-node",
+            "request": "launch",
+            "isCaas": false
+        }
+    ]
+}
