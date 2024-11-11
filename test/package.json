@@ -1,0 +1,12 @@
+{
+    "name": "graphsmartcontract",
+    "version": "1.0.0",
+    "description": "graphsmartcontract contract implemented in JavaScript",
+    "main": "test.js",
+    "engines": {
+        "node": ">=18"
+    },
+    "scripts": {
+  "test": "mocha test.js"
+}
+}

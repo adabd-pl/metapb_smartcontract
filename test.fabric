@@ -7,16 +7,24 @@
     },
     {
         "query": "getEffectivePermission",
-        "args": ["U1" , "G1"]
+        "args": ["Q1" , "G1"]
     },
     {
         "query": "getEffectivePermission",
         "args": ["U1" , "A1"]
     },
     {
-       "invoke": "updatePermissions",
-       "args": [ "U1" ,  "G1" , "001" ,"UPDATE"]
+        "query": "getEffectivePermissionRichQuery",
+        "args": ["U1" , "A1"]
     },
+    {
+       "invoke": "updatePermissions",
+       "args": [ "U1" ,  "G1" , "011" ,"UPDATE"]
+    },
+    {
+        "invoke": "updatePermissions",
+        "args": [ "U1" ,  "G1" , "001" ,"ADD"]
+     },
     {
         "invoke": "deletePermissions",
         "args": [ "U1" ,  "G1" ]
