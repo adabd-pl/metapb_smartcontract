@@ -1,0 +1,22 @@
+name: Caliper test
+version: "2.0.0"
+
+caliper:
+  blockchain: fabric
+  sutOptions:
+    mutualTls: false
+channels: default
+
+organizations:
+  - mspid: Org1MSP
+    identities:
+      certificates:
+      - name: 'Org1Admin'
+        clientPrivateKey:
+          path: 'C:/Users/Ada/.vscode/extensions/spydra.hyperledger-fabric-debugger-1.0.0/fabric/local/organizations/peerOrganizations/org1.debugger.com/users/Org1Admin/msp/keystore/9cb66cce2e371b9fc0e10711ce283ab0b0ac4aa5fb4c9e7715f0866fd2cca1c0_sk'
+        clientSignedCert:
+          path: 'C:/Users/Ada/.vscode/extensions/spydra.hyperledger-fabric-debugger-1.0.0/fabric/local/organizations/peerOrganizations/org1.debugger.com/users/Org1Admin/msp/signcerts/cert.pem'
+
+    connectionProfile:
+      path: 'C:/Users/Ada/.vscode/extensions/spydra.hyperledger-fabric-debugger-1.0.0/fabric/sampleconfig/ccp/org1.json'
+      discover: false
