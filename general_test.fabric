@@ -12,23 +12,12 @@
     {"invoke": "updatePermissions","args": [ "U1" ,  "G1" , "101" ,"ADD"]},
     {"invoke": "updatePermissions","args": [ "U1" ,  "A1" , "101" ,"ADD"]},
     {"invoke": "updatePermissions","args": [ "G1" ,  "A1" , "010" ,"ADD"]},
-    {"invoke": "updatePermissions","args": [ "G2" ,  "A1" , "110" ,"ADD"]}, 
+    {"invoke": "updatePermissions","args": [ "G1" ,  "G2" , "110" ,"ADD"]}, 
     {"invoke": "updatePermissions","args": [ "G2" ,  "A2" , "011" ,"ADD"]},
     {"invoke": "updatePermissions","args": [ "G2" ,  "A3" , "001" ,"ADD"]},
     {"invoke": "deletePermissions","args": [ "U1" ,  "A1" ]},
-    {
-        "query": "getEffectivePermission",
-        "args": ["U1" , "A1"]
-    },
-    {
-        "invoke": "updatePermissions",
-        "args": [ "G1" ,  "A1" , "001" ,"UPDATE"]
-     },
-     {
-        "query": "getEffectivePermission",
-        "args": ["U1" , "A1"]
-    },
-    {
-        "query": "queryGraph"
-    }
+    {"query": "getEffectivePermission","args": ["U1" , "A1"]},
+    {"invoke": "updatePermissions","args": [ "G1" ,  "A1" , "001" ,"UPDATE"]},
+    {"query": "getEffectivePermission","args": ["U1" , "A1"]},
+    {"query": "queryGraph"}
 ]
