@@ -6,42 +6,107 @@
     <script src="https://d3js.org/d3.v7.min.js"></script>
     <script src="https://cdn.jsdelivr.net/npm/d3-dag@0.6"></script>
     <style>
+        body {
+            display: flex;
+        }
+
+        svg {
+            flex: 3;
+            border: 1px solid #ccc;
+        }
+
+        .sidebar {
+            flex: 1;
+            padding: 10px;
+            border-left: 1px solid #ccc;
+        }
+
         .node.A { fill: red; }
         .node.G { fill: green; }
         .node.U { fill: blue; }
         .link { stroke: black; stroke-width: 1.5px; fill: none; }
-        .text { font-size: 12px; text-anchor: middle; }
-        .link-label { font-size: 10px; fill: black; text-anchor: middle; }
+        .text { font-size: 18px; text-anchor: end; }
+        .link-label { font-size: 20px; fill: black; text-anchor: middle; }
     </style>
 </head>
 <body>
-    <svg width="800" height="600"></svg>
+    <svg width="800" height="600">
+        <!-- Definicja strzałek -->
+        <defs>
+            <marker
+                id="arrowhead"
+                viewBox="0 -5 10 10"
+                refX="15"
+                refY="0"
+                orient="auto"
+                markerWidth="10"
+                markerHeight="10"
+            >
+                <path d="M0,-5L10,0L0,5" fill="black"></path>
+            </marker>
+        </defs>
+    </svg>
+
+    <div class="sidebar">
+        <h3>Szczegóły wierzchołka</h3>
+        <label for="vertex-select">Wybierz wierzchołek:</label>
+        <select id="vertex-select"></select>
+
+        <h4>Rodzice (Direct Parents)</h4>
+        <table id="parents-table" border="1">
+            <thead>
+                <tr><th>Vertex</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h4>Dzieci (Direct Children)</h4>
+        <table id="children-table" border="1">
+            <thead>
+                <tr><th>Vertex</th><th>Permissions</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h4>Effective Parents</h4>
+        <table id="effective-parents-table" border="1">
+            <thead>
+                <tr><th>Vertex</th><th>Intermediaries</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+
+        <h4>Effective Children</h4>
+        <table id="effective-children-table" border="1">
+            <thead>
+                <tr><th>Vertex</th><th>Permissions</th><th>Intermediaries</th></tr>
+            </thead>
+            <tbody></tbody>
+        </table>
+    </div>
 
     <script>
-        // Funkcja do pobrania danych z pliku JSON
         async function loadGraphData() {
             try {
-                const response = await fetch('graphData.json'); // Wczytaj plik JSON
+                const response = await fetch('outputGraph.json'); // Wczytaj plik JSON
                 const data = await response.json(); // Parsowanie JSON
                 visualizeGraph(data); // Przekaż dane do funkcji wizualizacji
+                setupSidebar(data); // Przekaż dane do funkcji panelu bocznego
             } catch (error) {
                 console.error('Błąd podczas wczytywania pliku JSON:', error);
             }
         }
 
-        // Funkcja do wizualizacji grafu
         function visualizeGraph(graphData) {
-            // Wyciąganie wierzchołków i krawędzi
             const nodes = graphData.map(d => ({ id: d.vertex }));
             const links = graphData.flatMap(d =>
                 d.direct_children_index_table.map(child => ({
-                    source: d.vertex,
-                    target: child.vertex,
+                    source: child.vertex,
+                    target: d.vertex, // Rodzic jako cel
                     permissions: child.permissions
                 }))
             );
 
-            // Tworzenie układu DAG (Directed Acyclic Graph)
             const dag = d3.dagStratify()(nodes.map(d => ({
                 id: d.id,
                 parentIds: links.filter(link => link.target === d.id).map(link => link.source)
@@ -54,50 +119,31 @@
                 .coord(d3.coordCenter())
                 (dag);
 
-            // Tworzenie SVG
             const svg = d3.select("svg");
             const linkGroup = svg.append("g");
             const nodeGroup = svg.append("g");
 
-            // Dodanie krawędzi
-            const linkElements = linkGroup.selectAll("path")
+            // Krawędzie z etykietami
+            linkGroup.selectAll("path")
                 .data(dag.links())
                 .join("path")
                 .attr("class", "link")
+                .attr("marker-end", "url(#arrowhead)") // Dodanie strzałki
                 .attr("d", d => d3.line()(
                     d.points.map(p => [p.x, p.y])
                 ));
 
-            // Dodanie etykiet krawędzi (permissions)
-            linkGroup.selectAll("text")
+            // Dodanie etykiet do krawędzi
+            linkGroup.selectAll(".link-label")
                 .data(dag.links())
                 .join("text")
                 .attr("class", "link-label")
-                .attr("x", d => {
-                    const midPoint = d.points.reduce((acc, p, i, arr) => {
-                        if (i < arr.length - 1) {
-                            acc.x += (p.x + arr[i + 1].x) / 2;
-                        }
-                        return acc;
-                    }, { x: 0 }).x / (d.points.length - 1);
-                    return midPoint;
-                })
-                .attr("y", d => {
-                    const midPoint = d.points.reduce((acc, p, i, arr) => {
-                        if (i < arr.length - 1) {
-                            acc.y += (p.y + arr[i + 1].y) / 2;
-                        }
-                        return acc;
-                    }, { y: 0 }).y / (d.points.length - 1);
-                    return midPoint;
-                })
-                .text(d => {
-                    const link = links.find(l => l.source === d.source.id && l.target === d.target.id);
-                    return link ? link.permissions : "";
-                });
+                .attr("x", d => (d.source.x + d.target.x) / 2) // Średnia X krawędzi
+                .attr("y", d => (d.source.y + d.target.y) / 2) // Średnia Y krawędzi
+                .text(d => d.permissions); // Wypisanie permissions na krawędzi
 
-            // Dodanie wierzchołków
-            const nodeElements = nodeGroup.selectAll("circle")
+            // Wierzchołki
+            nodeGroup.selectAll("circle")
                 .data(dag.descendants())
                 .join("circle")
                 .attr("class", d => `node ${d.id.startsWith('A') ? 'A' : d.id.startsWith('G') ? 'G' : 'U'}`)
@@ -105,17 +151,51 @@
                 .attr("cx", d => d.x)
                 .attr("cy", d => d.y);
 
-            // Dodanie etykiet wierzchołków
             nodeGroup.selectAll("text")
                 .data(dag.descendants())
                 .join("text")
                 .attr("class", "text")
                 .attr("x", d => d.x)
-                .attr("y", d => d.y - 15) // Pozycjonowanie etykiety nad wierzchołkiem
+                .attr("y", d => d.y - 15)
                 .text(d => d.id);
         }
 
-        // Wywołanie funkcji ładującej dane
+        function setupSidebar(graphData) {
+            const select = document.getElementById('vertex-select');
+            select.innerHTML = graphData.map(d => `<option value="${d.vertex}">${d.vertex}</option>`).join('');
+
+            select.addEventListener('change', () => {
+                const selectedVertex = select.value;
+                const vertexData = graphData.find(d => d.vertex === selectedVertex);
+                updateTables(vertexData);
+            });
+
+            updateTables(graphData[0]);
+        }
+
+        function updateTables(vertexData) {
+            const parentsTable = document.getElementById('parents-table').querySelector('tbody');
+            const childrenTable = document.getElementById('children-table').querySelector('tbody');
+            const effectiveParentsTable = document.getElementById('effective-parents-table').querySelector('tbody');
+            const effectiveChildrenTable = document.getElementById('effective-children-table').querySelector('tbody');
+
+            parentsTable.innerHTML = vertexData.direct_parent_index_table.map(parent => `
+                <tr><td>${parent}</td></tr>
+            `).join('');
+
+            childrenTable.innerHTML = vertexData.direct_children_index_table.map(child => `
+                <tr><td>${child.vertex}</td><td>${child.permissions}</td></tr>
+            `).join('');
+
+            effectiveParentsTable.innerHTML = vertexData.effective_parent_index_table.map(parent => `
+                <tr><td>${parent.vertex}</td><td>${parent.intermediaries.join(', ')}</td></tr>
+            `).join('');
+
+            effectiveChildrenTable.innerHTML = vertexData.effective_children_index_table.map(child => `
+                <tr><td>${child.vertex}</td><td>${child.permissions}</td><td>${child.intermediaries.join(', ')}</td></tr>
+            `).join('');
+        }
+
         loadGraphData();
     </script>
 </body>

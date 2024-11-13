@@ -1,0 +1,235 @@
+[
+  {
+    "vertex": "U1",
+    "direct_children_index_table": [],
+    "effective_children_index_table": [],
+    "direct_parent_index_table": [
+      "G1",
+      "A1"
+    ],
+    "effective_parent_index_table": [
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "vertex": "G1"
+      },
+      {
+        "intermediaries": [
+          "A1",
+          "G1"
+        ],
+        "vertex": "A1"
+      },
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "vertex": "G2"
+      },
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "vertex": "A2"
+      },
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "vertex": "A3"
+      }
+    ]
+  },
+  {
+    "vertex": "G1",
+    "direct_children_index_table": [
+      {
+        "permissions": "101",
+        "vertex": "U1"
+      }
+    ],
+    "effective_children_index_table": [
+      {
+        "intermediaries": [
+          "U1"
+        ],
+        "permissions": "101",
+        "vertex": "U1"
+      }
+    ],
+    "direct_parent_index_table": [
+      "A1",
+      "G2"
+    ],
+    "effective_parent_index_table": [
+      {
+        "intermediaries": [
+          "A1"
+        ],
+        "vertex": "A1"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "vertex": "G2"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "vertex": "A2"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "vertex": "A3"
+      }
+    ]
+  },
+  {
+    "vertex": "G2",
+    "direct_children_index_table": [
+      {
+        "permissions": "110",
+        "vertex": "G1"
+      }
+    ],
+    "effective_children_index_table": [
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "permissions": "110",
+        "vertex": "U1"
+      },
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "permissions": "110",
+        "vertex": "G1"
+      }
+    ],
+    "direct_parent_index_table": [
+      "A2",
+      "A3"
+    ],
+    "effective_parent_index_table": [
+      {
+        "intermediaries": [
+          "A2"
+        ],
+        "vertex": "A2"
+      },
+      {
+        "intermediaries": [
+          "A3"
+        ],
+        "vertex": "A3"
+      }
+    ]
+  },
+  {
+    "vertex": "A1",
+    "direct_children_index_table": [
+      {
+        "permissions": "101",
+        "vertex": "U1"
+      },
+      {
+        "permissions": "010",
+        "vertex": "G1"
+      }
+    ],
+    "effective_children_index_table": [
+      {
+        "intermediaries": [
+          "U1",
+          "G1"
+        ],
+        "permissions": "111",
+        "vertex": "U1"
+      },
+      {
+        "intermediaries": [
+          "G1"
+        ],
+        "permissions": "010",
+        "vertex": "G1"
+      }
+    ],
+    "direct_parent_index_table": [],
+    "effective_parent_index_table": []
+  },
+  {
+    "vertex": "A2",
+    "direct_children_index_table": [
+      {
+        "permissions": "011",
+        "vertex": "G2"
+      }
+    ],
+    "effective_children_index_table": [
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "011",
+        "vertex": "U1"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "011",
+        "vertex": "G1"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "011",
+        "vertex": "G2"
+      }
+    ],
+    "direct_parent_index_table": [],
+    "effective_parent_index_table": []
+  },
+  {
+    "vertex": "A3",
+    "direct_children_index_table": [
+      {
+        "permissions": "001",
+        "vertex": "G2"
+      }
+    ],
+    "effective_children_index_table": [
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "001",
+        "vertex": "U1"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "001",
+        "vertex": "G1"
+      },
+      {
+        "intermediaries": [
+          "G2"
+        ],
+        "permissions": "001",
+        "vertex": "G2"
+      }
+    ],
+    "direct_parent_index_table": [],
+    "effective_parent_index_table": []
+  }
+]
