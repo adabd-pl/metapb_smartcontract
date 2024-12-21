@@ -2,7 +2,8 @@ const fs = require('fs');
 const sinon = require('sinon');
 const chai = require('chai');
 const { expect } = chai;
-const GraphSmartContract = require('../lib/graphsmartcontract');
+const path = require('path');
+const GraphSmartContract = require(path.join(__dirname, '../lib/graphsmartcontract'));
 
 class GraphTest {
   constructor() {
@@ -114,7 +115,8 @@ describe('GraphSmartContract Tests', function () {
 
   it('should calculate effective permissions correctly', async function () {
 
-    const initialGraph = graphTest.loadJSON('graphData.json');
+    const initialGraph = graphTest.loadJSON(path.join(__dirname, 'graphData.json'));
+
     graphTest.state.graph = initialGraph;
     await graphTest.graphSmartContract.addVertex(graphTest.ctx, 'U1');
     await graphTest.graphSmartContract.addVertex(graphTest.ctx, 'G1');
@@ -187,7 +189,8 @@ describe('GraphSmartContract Tests', function () {
 
 
   it('should match the expected graph structure', async function () {
-    const initialGraph = graphTest.loadJSON('graphData.json');
+    const initialGraph = graphTest.loadJSON(path.join(__dirname, 'graphData.json'));
+
     graphTest.state.graph = initialGraph;
 
     await graphTest.graphSmartContract.addVertex(graphTest.ctx, "U1" ); 

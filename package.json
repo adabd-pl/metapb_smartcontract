@@ -8,9 +8,8 @@
     },
     "scripts": {
         "lint": "eslint *.js */**.js",
-        "pretest": "npm run lint",
         "test": "nyc mocha --recursive",
-        "start": "fabric-chaincode-node start"
+        "start": "fabric-chacdincode-node start"
     },
     "engineStrict": true,
     "dependencies": {
